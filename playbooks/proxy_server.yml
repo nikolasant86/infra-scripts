@@ -1,0 +1,6 @@
+- hosts: proxy_server
+  become: true
+  vars_files: 
+    - ../vars/proxy_server_haproxy.yml
+  roles:
+    - role: hifis.haproxy
