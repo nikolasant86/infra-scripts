@@ -1,0 +1,48 @@
+haproxy_version: '3.2.*'
+haproxy_frontend_ip: '192.168.1.100'
+
+# http_in_frontend_setup
+
+use_http_in_frontend: true
+http_in: 'http_in'
+http_in_ip: '*'
+http_in_port: '80'
+http_in_mode: 'http'
+http_in_acl_secret_dir: '/.well-known/acme-challenge/'
+http_in_backend: 'certbot_backend'
+http_in_default_backend: 'k8s_ingress_http'
+
+# https_in_frontend_setup
+
+use_https_in_frontend: true
+https_in: 'https_in'
+https_in_ip: '*'
+https_in_port: '443'
+https_in_mode: 'tcp'
+https_in_default_backend: 'k8s_ingress_https'
+
+# http_in_backend_setup
+
+use_http_in_backend: true
+http_in_backend_mode: 'http'
+http_in_backend_server: 'certbot 127.0.0.1:8888 check'
+
+# http_in_default_backend_setup
+
+use_http_in_default_backend: true
+http_in_default_backend_mode: 'http'
+http_in_default_backend_balance: 'roundrobin'
+http_in_default_backend_request: 'set-header X-Forwarded-For %[src]'
+http_in_default_backend_server: 'ingress_node 192.168.1.210:80 check'
+
+# https_in_default_backend_setup
+
+use_https_in_default_backend: true
+https_in_default_backend_mode: 'tcp'
+https_in_default_backend_balance: 'roundrobin'
+https_in_default_backend_server: 'ingress_node 192.168.1.210:443 check'
+
+use_backend_name: false
+use_backend_mode: false
+use_backend_server_address: false
+haproxy_global_dh_param_file: false
