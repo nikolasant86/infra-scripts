@@ -1,0 +1,6 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for nginx_webserver
+
+destin_dir: /var/www/html/
+destin_folder: /etc/nginx/conf.d/

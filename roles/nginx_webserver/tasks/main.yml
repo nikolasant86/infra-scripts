@@ -1,0 +1,56 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for nginx_webserver
+
+- name: Check and Print Linux OS family
+  debug:
+    var: ansible_facts['os_family']
+
+- block:      # ====== Tasks for Debian os_family ======
+
+    - name: Install default Nginx Web Server
+      ansible.builtin.apt:
+        name: nginx{{ nginx_version | default('') }}
+        state: present
+
+  when: ansible_facts['os_family'] == "Debian"
+
+- block:      # ====== Tasks for RedHat os_family ====== 
+
+    - name: Install default Nginx Web Server
+      ansible.builtin.yum:
+        name: nginx{{ nginx_version | default('') }}
+        state: present
+
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Delete default from sites-enabled
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Copy My Site Files to Server
+  ansible.builtin.copy:
+    src: files/
+    dest: "{{ destin_dir }}"
+    owner: root
+    group: root
+    mode: 0755
+  notify: Reload Nginx
+
+- name: Copy My Site Configuration File to Server
+  ansible.builtin.template:
+    src: "site.j2"
+    dest: "{{ destin_folder }}/site.conf"
+    owner: root
+    group: root
+    mode: 0755
+  notify: Reload Nginx
+
+- name: Start and Enable Nginx WebServer
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+
+
