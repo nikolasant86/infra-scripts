@@ -1,0 +1,7 @@
+---
+- name: Install and Configure Nginx WebServer
+  hosts: education
+  become: yes
+
+  roles:
+    - { role: nginx_webserver, when: ansible_system == 'Linux' }

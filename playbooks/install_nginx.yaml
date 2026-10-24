@@ -1,0 +1,16 @@
+---
+- name: Install default Nginx Web Server
+  hosts: education
+  become: yes
+
+  tasks:
+  - name: Install Nginx WebServer
+    ansible.builtin.apt:
+      name: nginx{{ nginx_version | default('') }}
+      state: present
+
+  - name: Start and Enable Nginx WebServer
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: yes
