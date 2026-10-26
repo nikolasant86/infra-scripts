@@ -1,7 +1,7 @@
 ---
-ansible_user                 : sofia
-ansible_user_password        : 1306
-ansible_become_password      : 1306
+ansible_user                 : user
+ansible_user_password        : user_password
+ansible_become_password      : become_password
 ansible_ssh_private_key_file : /home/nikolas/.ssh/id_ed25519_proxy_server
 http_port                    : 80
 server_name                  : localhost
